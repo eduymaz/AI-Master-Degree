@@ -1,0 +1,49 @@
+{
+  "evaluation_id": "f2g3h4i5-uc1-off-2026-05-28",
+  "use_case_summary": "Hibrit CNN+ViT mimarisinde akciğer X-ray çoklu patoloji sınıflandırması. MIMIC + CheXpert + PadChest + VinDr çoklu-bölgeli dataset; HITL paradigmasında radyolog onayı; Grad-CAM + SHAP açıklanabilirlik.",
+  "ethics_scores": {
+    "fairness": {
+      "score": 7.5,
+      "rationale": "Çoklu-bölgeli dataset birleşimi temsiliyeti güçlendiriyor. Federated learning ile yerel verinin entegrasyonu olumlu.",
+      "sources": ["eu-ai-act-2024#003", "fda-aiml-samd-2025#002"]
+    },
+    "transparency": {
+      "score": 7.7,
+      "rationale": "Grad-CAM + SHAP ile çift-katmanlı açıklanabilirlik; AB YZ Yasası Madde 13 karşılanıyor.",
+      "sources": ["eu-ai-act-2024#004"]
+    },
+    "accountability": {
+      "score": 7.5,
+      "rationale": "Çok-aktörlü sorumluluk zinciri + audit log + PCCP entegrasyonu güçlü.",
+      "sources": ["fda-aiml-samd-2025#003"]
+    },
+    "privacy": {
+      "score": 8.0,
+      "rationale": "DICOM DEID + federated learning + KVKK/GDPR uyumu yüksek standart.",
+      "sources": ["kvkk-saglik-yz-2025#001"]
+    },
+    "human_oversight": {
+      "score": 7.5,
+      "rationale": "HITL paradigması standart klinik pratiğe uygun.",
+      "sources": ["italya-yz-yasasi-2025#001"]
+    }
+  },
+  "legal_compliance": {
+    "eu_ai_act_risk_class": "high",
+    "applicable_regulations": ["EU AI Act Art.6", "EU MDR", "GDPR Art.9", "KVKK Md.6", "FDA SaMD"],
+    "compliance_gaps": ["Türkiye TİTCK YZ-spesifik rehberi yok"],
+    "sources": []
+  },
+  "rule_violations": [],
+  "narrative_assessment": "## Genel Değerlendirme\n\nRadyolojide YZ destekli tanı sistemi olgun bir mimari sergiliyor. Çoklu-bölgeli dataset, HITL onayı, açıklanabilirlik (Grad-CAM + SHAP), federated learning ve PCCP entegrasyonu modern best-practice'lere uygun.\n\nSistem AB YZ Yasası yüksek-risk kategorisine giriyor ve uygulanabilir tüm düzenlemeler (MDR, GDPR, KVKK, FDA, İtalya) ile uyumlu görünüyor.",
+  "retrieved_sources": [],
+  "metadata": {
+    "llm_provider": "claude",
+    "model_version": "claude-sonnet-4-6",
+    "retrieval_top_k": 5,
+    "rules_enabled": false,
+    "duration_ms": 6890,
+    "tokens_used": { "input": 4612, "output": 1102 },
+    "timestamp": "2026-05-28T14:32:00Z"
+  }
+}

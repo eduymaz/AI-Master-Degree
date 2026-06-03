@@ -1,0 +1,7 @@
+use_case,mode,fairness,transparency,accountability,privacy,human_oversight,average,risk_class,violations_count,rules_triggered
+UC1-Radyoloji,rules_on,6.8,7.5,7.5,7.8,7.5,7.42,high,4,"ETH-FAIR-001,LEG-EU-001,LEG-EU-002,LEG-DP-001"
+UC1-Radyoloji,rules_off,7.5,7.7,7.5,8.0,7.5,7.64,high,0,""
+UC2-CDSS,rules_on,6.5,6.5,7.2,7.0,6.8,6.80,high,6,"LEG-IT-001,ETH-HUM-003,LEG-EU-001,LEG-DP-001,LEG-EU-002,ETH-FAIR-003"
+UC2-CDSS,rules_off,7.2,7.0,7.5,7.4,7.4,7.30,high,0,""
+UC3-Veri,rules_on,7.8,8.0,8.2,8.5,8.0,8.10,high,2,"LEG-DP-002,ETH-PRIV-003"
+UC3-Veri,rules_off,8.0,8.0,8.5,8.5,8.5,8.30,high,0,""

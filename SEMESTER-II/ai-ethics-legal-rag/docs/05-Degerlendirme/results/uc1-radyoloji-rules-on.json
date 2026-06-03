@@ -1,0 +1,102 @@
+{
+  "evaluation_id": "e1f2a3c4-uc1-on-2026-05-28",
+  "use_case_summary": "Hibrit CNN+ViT mimarisinde akciğer X-ray çoklu patoloji sınıflandırması. MIMIC-CXR + CheXpert + PadChest + VinDr-CXR çoklu-bölgeli dataset; HITL paradigmasında radyolog onayı zorunlu; Grad-CAM + SHAP açıklanabilirlik; KVKK + GDPR uyumlu federated learning ile yerel doğrulama. Sistem AB YZ Yasası Annex I + Madde 6(1) kapsamında YÜKSEK-RİSK sınıfındadır.",
+  "ethics_scores": {
+    "fairness": {
+      "score": 6.8,
+      "rationale": "MIMIC-CXR ve CheXpert ABD-merkezli datasetler; PadChest (İspanya) ve VinDr-CXR (Vietnam) entegrasyonu coğrafi çeşitliliği artırsa da, Türkiye yerel demografik temsiliyetinin federated learning ile sağlanması kritik. Independence/Separation/Sufficiency metrikleri belirtilmiş ancak Fitzpatrick cilt tonu testi açıkça yapılmamış (akciğer X-ray için kısmi geçerli).",
+      "sources": ["eu-ai-act-2024#003", "ethics-concepts-health-2026#001", "fda-aiml-samd-2025#002"]
+    },
+    "transparency": {
+      "score": 7.5,
+      "rationale": "Layer-wise Grad-CAM + SHAP overlay PACS arayüzünde radyologa görsel ve sayısal açıklama sağlıyor. AB YZ Yasası Madde 13 (şeffaflık) yükümlülüğü karşılanıyor; ancak Frontiers in Radiology (2025) eleştirisi — XAI'nin klinisyen ihtiyaçlarına tam uyarlı olmayışı — bu sistem için de geçerli.",
+      "sources": ["eu-ai-act-2024#004", "ethics-concepts-health-2026#002"]
+    },
+    "accountability": {
+      "score": 7.5,
+      "rationale": "6 paydaş tanımlı (radyolog, klinisyen, hasta, hastane, üretici, sigorta). DICOM metadata + model versiyon audit-log her tahmin için tutuluyor. FDA PCCP mekanizması ile post-market değişiklik yönetimi ve AB YZ Yasası Madde 9 risk yönetimi sürekliliği sağlanıyor. AILD geri çekildiği için sorumluluk ürün sorumluluğu + sektörel kurallar üzerinden.",
+      "sources": ["fda-aiml-samd-2025#003", "eu-ai-act-2024#002"]
+    },
+    "privacy": {
+      "score": 7.8,
+      "rationale": "DICOM DEID anonimizasyonu + federated learning (veri hastane sınırını terk etmiyor) + KVKK Madde 6 ve GDPR Madde 9 uyumu. DEID'in geri-tanımlama riskine karşı testi (KVKK Kasım 2025 geri döndürülemezlik şartı) belgelenmesi önerilir.",
+      "sources": ["kvkk-saglik-yz-2025#001", "kvkk-saglik-yz-2025#002"]
+    },
+    "human_oversight": {
+      "score": 7.5,
+      "rationale": "HITL paradigması — radyolog her tanıyı onaylamadan rapor yayımlanmıyor. CADx ikinci-okuyucu pozisyonu. İtalya yargı bölgesi bağlamında 'hekim son söz' ilkesi otomatik uygulanır. Lancet (2026) HITL'in 'sembolik güvence' eleştirisi, doctor-AI consensus rate ölçümü eklenerek azaltılabilir.",
+      "sources": ["italya-yz-yasasi-2025#001", "ethics-concepts-health-2026#003"]
+    }
+  },
+  "legal_compliance": {
+    "eu_ai_act_risk_class": "high",
+    "applicable_regulations": [
+      "EU AI Act Art.6(1) + Annex I",
+      "EU MDR (Class IIa+)",
+      "GDPR Art.9 + Art.22",
+      "KVKK Md.6 + Md.12",
+      "FDA SaMD (510(k) + PCCP)",
+      "Italy AI Law (Oct 2025)",
+      "ISO/IEC 42001"
+    ],
+    "compliance_gaps": [
+      "TİTCK YZ-tıbbi cihaz değerlendirme metodolojisi henüz yayımlanmamış",
+      "Veri çeşitlilik raporu (AB YZ Yasası Madde 10) Türkiye yerel datasında etnik temsiliyet için standart eksik",
+      "DPIA (GDPR Madde 35) tamamlama durumu belirtilmemiş"
+    ],
+    "sources": ["eu-ai-act-2024#001", "fda-aiml-samd-2025#001", "kvkk-saglik-yz-2025#003"]
+  },
+  "rule_violations": [
+    {
+      "rule_id": "ETH-FAIR-001",
+      "rule_name": "Demografik temsiliyet kontrolü",
+      "severity": "warning",
+      "message": "Eğitim verisi ABD/Batı-merkezli; subgroup performance raporu ve yerel doğrulama önerilir (AB YZ Yasası Madde 10).",
+      "affected_dimension": "fairness"
+    },
+    {
+      "rule_id": "LEG-EU-001",
+      "rule_name": "Yüksek-risk sınıflandırma — tıbbi cihaz",
+      "severity": "info",
+      "message": "Bu use case AB YZ Yasası Madde 6(1) + Annex I kapsamında YÜKSEK-RİSK sınıfındadır. Madde 9-15 yükümlülükleri uygulanır.",
+      "affected_dimension": null
+    },
+    {
+      "rule_id": "LEG-EU-002",
+      "rule_name": "Veri yönetişimi - Madde 10",
+      "severity": "warning",
+      "message": "AB YZ Yasası Madde 10 — veri yönetişimi yükümlülüğü için veri kalitesi ve temsiliyet dokümantasyonu gerekir.",
+      "affected_dimension": null
+    },
+    {
+      "rule_id": "LEG-DP-001",
+      "rule_name": "DPIA gerekliliği",
+      "severity": "warning",
+      "message": "GDPR Madde 35 — yüksek-risk veri işleme için Veri Koruma Etki Değerlendirmesi (DPIA) zorunludur.",
+      "affected_dimension": null
+    }
+  ],
+  "narrative_assessment": "## Genel Değerlendirme\n\nBu radyolojide YZ destekli tanı sistemi (UC1), **AB YZ Yasası Annex I + Madde 6(1) kapsamında YÜKSEK-RİSK** sınıfında konumlanmaktadır. Sistem büyük ölçüde olgun bir mimari (hibrit CNN+ViT + Grad-CAM/SHAP açıklanabilirlik + HITL onay) ve düzenleyici farkındalık sergiliyor.\n\n## Adalet\n\nÇoklu-bölgeli dataset birleşimi (MIMIC + CheXpert + PadChest + VinDr) takdire şayan; ancak MIMIC-CXR ve CheXpert'in ABD-merkezliliği, *Nature Medicine* (Yang et al., 2024) ve *Science Advances* (Glocker et al., 2025) çalışmalarının ortaya koyduğu **demografik bias** riskini taşımakta. Federated learning ile yerel Türkiye verisi entegrasyonu doğru yön; ancak **subgroup performance dashboard** (yaş × cinsiyet × etnisite) sürekli izlenmeli.\n\n## Şeffaflık\n\nLayer-wise Grad-CAM ve SHAP overlay, AB YZ Yasası Madde 13 yükümlülüğünü karşılayacak biçimde tasarlanmış. *Frontiers in Radiology* (2025) eleştirisi — XAI'nin klinisyen iş akışına tam entegre olmayışı — bu sistem için de geçerli olabilir; **radyolog kullanım çalışması** (gözlem + geribildirim) önerilir.\n\n## Hesap Verebilirlik\n\nAILD'nin Şubat 2025'te geri çekilmesi sonrası sorumluluk dağılımı **ürün sorumluluğu + sektörel kurallar** üzerinden işliyor. Sistem 6 paydaş ile çok-aktörlü hesap verebilirlik zinciri kuruyor; audit log + PCCP mekanizmaları + ISO/IEC 42001 sertifikasyonu (önerilir) bu zinciri güçlendirir.\n\n## Mahremiyet\n\nDICOM DEID + federated learning + KVKK/GDPR uyumu güçlü bir gizlilik mimarisi sunuyor. KVKK Kasım 2025 rehberindeki **geri döndürülemezlik** şartı için DEID protokolünün **membership inference attack** ile test edilmesi öneririm.\n\n## İnsan Denetimi\n\nHITL — radyolog her tanıyı onaylar — standart klinik pratik. İtalya yargı bölgesinde 'hekim son söz' yasal zorunluluğa uygun. **Lancet (2026)** eleştirisinin önerdiği **doctor-AI consensus rate** metriğinin sürekli izlenmesi, HITL'in 'sembolik güvence'ye dönüşmesini önlemek için önemli.\n\n## Türkiye Bağlamı\n\nBu sistem Türkiye'de pazara giriş için **TİTCK YZ-tıbbi cihaz rehberi**nin yayımlanmasını bekliyor (Sağlık Bakanlığı YZ Onay Birimi 2026 hedefi). Geçici geliştirme döneminde ISO/IEC 42001 sertifikasyonu ve hastane düzeyi etik kurul onayı pragmatik yol.",
+  "retrieved_sources": [
+    {
+      "doc_id": "eu-ai-act-2024",
+      "chunk_id": "eu-ai-act-2024#001",
+      "title": "AB Yapay Zekâ Yasası",
+      "authority": "European Commission",
+      "jurisdiction": "EU",
+      "text": "Madde 6(1): Annex I'de listelenen Birlik uyum mevzuatı kapsamındaki ürünlerin güvenlik bileşeni olarak veya kendisi bu mevzuat kapsamına giren YZ sistemleri yüksek-risk olarak kabul edilir...",
+      "similarity_score": 0.892,
+      "bm25_score": 0.781,
+      "fused_score": 0.0287
+    }
+  ],
+  "metadata": {
+    "llm_provider": "claude",
+    "model_version": "claude-sonnet-4-6",
+    "retrieval_top_k": 5,
+    "rules_enabled": true,
+    "duration_ms": 7234,
+    "tokens_used": { "input": 4823, "output": 1456 },
+    "timestamp": "2026-05-28T14:30:00Z"
+  }
+}
