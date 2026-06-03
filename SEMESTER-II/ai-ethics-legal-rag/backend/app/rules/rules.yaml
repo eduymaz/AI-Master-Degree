@@ -1,0 +1,277 @@
+# Kural Tabanı — Sağlık YZ Etik ve Hukuki Değerlendirme
+# Üç boyut: etik ilkeler / hukuki uyum / use case skorlama
+# Format: YAML; her kuralın id, isim, açıklama, tetikleyici ve eylemi vardır.
+
+metadata:
+  version: "1.0.0"
+  updated: "2026-05-28"
+  jurisdictions: [EU, US, TR, IT]
+  total_rules: 24
+
+# ─────────────────────────────────────────────────────────
+# 1. ETİK İLKE KONTROLLERİ
+# ─────────────────────────────────────────────────────────
+ethical_principles:
+
+  fairness:
+    description: "Adalet ve algoritmik önyargı kontrolleri"
+    rules:
+      - id: ETH-FAIR-001
+        name: "Demografik temsiliyet kontrolü"
+        description: "Veri kaynakları çoğul demografik gruplara temsil sağlıyor mu?"
+        triggers:
+          - field: use_case.description
+            pattern: "(?i)(mimic|chexpert|nih|isic|imagenet)"
+            description: "Tek-bölgeli/tek-popülasyonlu dataset tespiti"
+        severity: warning
+        message: "Eğitim verisi ABD/Batı-merkezli; subgroup performance raporu ve yerel doğrulama önerilir (AB YZ Yasası Madde 10)."
+        affected_dimension: fairness
+        score_penalty: 2.0
+
+      - id: ETH-FAIR-002
+        name: "Cilt tipi / dermatoloji bias kontrolü"
+        description: "Dermatoloji veya cilt-temelli sistemlerde Fitzpatrick IV-VI temsiliyeti"
+        triggers:
+          - field: use_case.area
+            equals: "radiology"
+            and_field: use_case.description
+            pattern: "(?i)(dermato|cilt|skin|lesyon|lezyon)"
+        severity: error
+        message: "Dermatoloji modelleri Fitzpatrick IV-VI cilt tipinde sistematik düşük performans gösterir (Daneshjou vd., 2025). Stratified test seti zorunlu."
+        affected_dimension: fairness
+        score_penalty: 3.0
+
+      - id: ETH-FAIR-003
+        name: "Adalet metrikleri tanımı eksik"
+        description: "Use case Independence/Separation/Sufficiency belirtmiyor"
+        triggers:
+          - field: use_case.description
+            not_pattern: "(?i)(independence|separation|sufficiency|equalized odds|demographic parity|kalibrasyon)"
+        severity: info
+        message: "Adalet ölçümü için Independence/Separation/Sufficiency metriklerinden en az birinin belirtilmesi önerilir."
+        affected_dimension: fairness
+        score_penalty: 1.0
+
+  transparency:
+    description: "Şeffaflık ve açıklanabilirlik (XAI) kontrolleri"
+    rules:
+      - id: ETH-TRANS-001
+        name: "XAI yöntemi tanımlı mı"
+        description: "Sistemde Grad-CAM, SHAP, LIME, attention veya counterfactual açıklama var mı?"
+        triggers:
+          - field: use_case.description
+            not_pattern: "(?i)(grad-cam|gradcam|shap|lime|attention|counterfactual|açıklanabilir|interpretab|xai)"
+        severity: warning
+        message: "Açıklanabilirlik (XAI) mekanizması belirtilmemiş. AB YZ Yasası Madde 13 gereği kullanıcı için anlamlı çıktı zorunlu."
+        affected_dimension: transparency
+        score_penalty: 2.0
+
+      - id: ETH-TRANS-002
+        name: "Hasta bilgilendirme - İtalya yasası"
+        description: "Hastaya YZ kullanımı bildirilecek mi?"
+        triggers:
+          - field: use_case.jurisdiction
+            contains: "IT"
+            and_field: use_case.description
+            not_pattern: "(?i)(hasta.*bilgi|patient.*inform|onam|consent|bildiri)"
+        severity: error
+        message: "İtalya YZ Yasası (Ekim 2025) sağlık alanında hastaya YZ kullanımının bildirilmesini zorunlu kılar."
+        affected_dimension: transparency
+        score_penalty: 2.5
+
+  accountability:
+    description: "Hesap verebilirlik ve sorumluluk zinciri kontrolleri"
+    rules:
+      - id: ETH-ACC-001
+        name: "Sorumluluk zinciri tanımı"
+        description: "Geliştirici/dağıtıcı/klinisyen rol ayrımı belirgin mi?"
+        triggers:
+          - field: use_case.affected_stakeholders
+            min_length: 3
+            invert: true
+        severity: warning
+        message: "Sorumluluk zinciri en az 3 paydaş içermelidir (üretici, dağıtıcı, klinisyen)."
+        affected_dimension: accountability
+        score_penalty: 1.5
+
+      - id: ETH-ACC-002
+        name: "Audit log mekanizması"
+        description: "Karar logları tutulacak mı?"
+        triggers:
+          - field: use_case.description
+            not_pattern: "(?i)(audit|log|kayıt|izlenebilir|traceab)"
+        severity: info
+        message: "Audit log mekanizması belirtilmemiş; İtalya yasası ve AB YZ Yasası Madde 12 gerektirir."
+        affected_dimension: accountability
+        score_penalty: 1.0
+
+  privacy:
+    description: "Mahremiyet ve veri koruma kontrolleri"
+    rules:
+      - id: ETH-PRIV-001
+        name: "Özel kategori veri farkındalığı"
+        description: "Sağlık verisi GDPR Md.9 / KVKK Md.6 kapsamında"
+        triggers:
+          - field: use_case.area
+            in: ["radiology", "clinical_decision_support", "data_governance"]
+            and_field: use_case.description
+            not_pattern: "(?i)(gdpr|kvkk|hipaa|özel nitelikli|özel kategori|veri koruma|anonim|federated)"
+        severity: warning
+        message: "Sağlık verisi GDPR Madde 9 ve KVKK Madde 6 kapsamında özel nitelikli kategoridedir; veri koruma stratejisi belirtilmeli."
+        affected_dimension: privacy
+        score_penalty: 2.0
+
+      - id: ETH-PRIV-002
+        name: "Anonimleştirme yöntemi"
+        description: "Naïve hashing yeterli değil; DP / federated / sentetik gerekli"
+        triggers:
+          - field: use_case.description
+            pattern: "(?i)(hash|hashing|pseudonym|psödonim)"
+            and_field: use_case.description
+            not_pattern: "(?i)(differential privacy|federated|sentetik|k-anonymity)"
+        severity: error
+        message: "KVKK Kasım 2025 rehberi naïve hashing'i yeterli kabul etmez; geri döndürülemezlik (DP, k-anonymity vb.) gerekir."
+        affected_dimension: privacy
+        score_penalty: 3.0
+
+      - id: ETH-PRIV-003
+        name: "Lokal işleme tercihi"
+        description: "Merkezi bulut yerine on-device veya kurum-içi"
+        triggers:
+          - field: use_case.description
+            pattern: "(?i)(cloud|bulut|merkezi)"
+            and_field: use_case.description
+            not_pattern: "(?i)(federated|on-device|kurum içi|local processing|yerel işleme)"
+        severity: info
+        message: "KVKK Kasım 2025 rehberi sağlık verisi için lokal işleme tercihi önerir; federated learning değerlendirilebilir."
+        affected_dimension: privacy
+        score_penalty: 1.0
+
+  human_oversight:
+    description: "İnsan denetimi (HITL/HOTL/HOOTL) kontrolleri"
+    rules:
+      - id: ETH-HUM-001
+        name: "İnsan denetimi paradigması"
+        description: "HITL/HOTL/HOOTL ayrımı belirtilmiş mi?"
+        triggers:
+          - field: use_case.description
+            not_pattern: "(?i)(hitl|hotl|hootl|human.in.the.loop|human.on.the.loop|insan denetim|hekim onay)"
+        severity: warning
+        message: "İnsan denetimi paradigması (HITL/HOTL/HOOTL) belirtilmemiş. AB YZ Yasası Madde 14 yüksek-risk için zorunlu."
+        affected_dimension: human_oversight
+        score_penalty: 2.0
+
+      - id: ETH-HUM-002
+        name: "Otonom karar yasağı - İtalya"
+        description: "Sağlıkta HOOTL (otonom) İtalya yasası ile yasak"
+        triggers:
+          - field: use_case.jurisdiction
+            contains: "IT"
+            and_field: use_case.description
+            pattern: "(?i)(otonom|autonomous|hootl|human.out.of.the.loop)"
+        severity: error
+        message: "İtalya YZ Yasası (Ekim 2025) sağlık alanında otonom karar (HOOTL) sistemlerini açıkça yasaklar."
+        affected_dimension: human_oversight
+        score_penalty: 4.0
+
+      - id: ETH-HUM-003
+        name: "Otomasyon bias farkındalığı"
+        description: "Klinisyen modeli körü körüne kabul edebilir mi?"
+        triggers:
+          - field: use_case.area
+            equals: "clinical_decision_support"
+            and_field: use_case.description
+            not_pattern: "(?i)(override|otomasyon bias|alert fatigue|consensus rate)"
+        severity: info
+        message: "CDSS bağlamında otomasyon bias ve alert fatigue riskleri belirtilmeli; override gerekçe alanı önerilir."
+        affected_dimension: human_oversight
+        score_penalty: 1.0
+
+# ─────────────────────────────────────────────────────────
+# 2. HUKUKİ UYUMLULUK KONTROLLERİ
+# ─────────────────────────────────────────────────────────
+legal_compliance:
+
+  eu_ai_act:
+    description: "AB YZ Yasası risk sınıflandırma ve yükümlülükler"
+    rules:
+      - id: LEG-EU-001
+        name: "Yüksek-risk sınıflandırma — tıbbi cihaz"
+        description: "MDR/IVDR kapsamında YZ otomatik yüksek-risk"
+        triggers:
+          - field: use_case.area
+            in: ["radiology", "clinical_decision_support"]
+        severity: info
+        message: "Bu use case AB YZ Yasası Madde 6(1) + Annex I kapsamında YÜKSEK-RİSK sınıfındadır. Madde 9-15 yükümlülükleri uygulanır."
+        risk_class_set: high
+
+      - id: LEG-EU-002
+        name: "Veri yönetişimi - Madde 10"
+        description: "Eğitim verisinin kalite ve temsiliyeti"
+        triggers:
+          - field: use_case.area
+            in: ["radiology", "clinical_decision_support", "data_governance"]
+            and_field: use_case.description
+            not_pattern: "(?i)(veri.kalite|data.quality|temsiliyet|representative|bias.evaluation)"
+        severity: warning
+        message: "AB YZ Yasası Madde 10 — veri yönetişimi yükümlülüğü için veri kalitesi ve temsiliyet dokümantasyonu gerekir."
+
+  gdpr_kvkk:
+    description: "Veri koruma uyumluluğu"
+    rules:
+      - id: LEG-DP-001
+        name: "DPIA gerekliliği"
+        description: "Yüksek-risk veri işleme için DPIA zorunlu"
+        triggers:
+          - field: use_case.area
+            in: ["radiology", "clinical_decision_support", "data_governance"]
+            and_field: use_case.description
+            not_pattern: "(?i)(dpia|veri koruma etki|impact assessment)"
+        severity: warning
+        message: "GDPR Madde 35 — yüksek-risk veri işleme için Veri Koruma Etki Değerlendirmesi (DPIA) zorunludur."
+
+      - id: LEG-DP-002
+        name: "KVKK ikincil kullanım"
+        description: "Sağlık verisi YZ eğitiminde — açık rıza veya istisna"
+        triggers:
+          - field: use_case.area
+            equals: "data_governance"
+            and_field: use_case.description
+            not_pattern: "(?i)(açık rıza|consent|kanunda öngörülen|broad consent|ehds)"
+        severity: warning
+        message: "KVKK Madde 6 gereği özel nitelikli veri kullanımı için açık rıza veya kanunda öngörülen istisna gerekir."
+
+  italy_law:
+    description: "İtalya YZ Yasası (Ekim 2025) sağlık hükümleri"
+    rules:
+      - id: LEG-IT-001
+        name: "Nihai karar daima hekimde"
+        description: "Tam otonom tıbbi karar İtalya'da yasak"
+        triggers:
+          - field: use_case.jurisdiction
+            contains: "IT"
+            and_field: use_case.area
+            in: ["radiology", "clinical_decision_support"]
+            and_field: use_case.description
+            not_pattern: "(?i)(hekim.son|hekim onay|nihai karar|physician.final|advisory)"
+        severity: error
+        message: "İtalya YZ Yasası: tıbbi kararda nihai söz daima hekimdedir. Sistem advisory rolünde tasarlanmalı."
+
+# ─────────────────────────────────────────────────────────
+# 3. USE CASE SKORLAMA - Genel
+# ─────────────────────────────────────────────────────────
+use_case_scoring:
+  base_score: 7.0
+  description: "Tüm boyutlarda başlangıç skoru 7/10; ihlal başına penalty uygulanır"
+  max_score: 10.0
+  min_score: 0.0
+  rules:
+    - id: SCORE-META-001
+      name: "Yeterli detay seviyesi"
+      description: "Use case açıklaması yeterince ayrıntılı mı?"
+      triggers:
+        - field: use_case.description
+          min_length: 200
+          invert: true
+      severity: info
+      message: "Use case açıklaması 200 karakterden az; daha kapsamlı tanım daha güvenilir değerlendirme sağlar."
