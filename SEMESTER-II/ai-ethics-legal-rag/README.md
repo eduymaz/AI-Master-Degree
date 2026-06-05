@@ -1,28 +1,53 @@
-# Sağlık YZ Etik — Değerlendirme Platformu
+<div align="center">
 
-> **Akademik Bağlam:** YZM 714 Yapay Zekânın Etik ve Hukuki Boyutu · Seçenek B Final Projesi
-> **Geliştirici:** Elif Duymaz Yılmaz · **Dönem:** 2025–2026 Bahar
+<img src="docs/06-TeknikRapor/sekiller/01-landing.png" alt="EthicGuard Platform Ana Sayfa" width="100%"/>
+
+# ⚕️ EthicGuard
+
+### Sağlık YZ Etik & Hukuki Uyumluluk Değerlendirme Platformu
+
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector_DB-FF6B35?style=flat-square&logo=databricks&logoColor=white)](https://www.trychroma.com/)
+[![Groq](https://img.shields.io/badge/Groq-Llama_3.1_8B-F55036?style=flat-square&logo=meta&logoColor=white)](https://groq.com/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
+**Sağlık alanındaki YZ uygulamalarını 7 uluslararası düzenleyici çerçeveye karşı sistematik biçimde değerlendiren kural tabanlı RAG-LLM platformu.**
+
+[🚀 Hızlı Başlangıç](#-hızlı-başlangıç-docker-ile-kurulum) · [📖 API Docs](http://localhost:8000/docs) · [🎮 Demo](#-kullanım) · [📋 Teknik Rapor](docs/06-TeknikRapor/teknik-rapor.md)
+
+---
+
+> **Akademik Bağlam:** YZM 714 Yapay Zekânın Etik ve Hukuki Boyutu · Seçenek B Final Projesi  
+> **Geliştirici:** Elif Duymaz Yılmaz · **Dönem:** 2025–2026 Bahar  
 > **Üniversite:** İzmir Bakırçay Üniversitesi — Fen Bilimleri Enstitüsü
+
+</div>
 
 ---
 
 ## 📋 İçindekiler
 
 1. [Proje Tanımı](#-proje-tanımı)
-2. [Sistem Mimarisi](#-sistem-mimarisi)
-3. [Nasıl Çalışır?](#-nasıl-çalışır)
-4. [Hızlı Başlangıç (Docker)](#-hızlı-başlangıç-docker-ile-kurulum)
-5. [Manuel Kurulum](#-manuel-kurulum-docker-olmadan)
-6. [Kullanım](#-kullanım)
-7. [API Referansı](#-api-referansı)
-8. [Sorun Giderme](#-sorun-giderme)
-9. [Klasör Yapısı](#-klasör-yapısı)
+2. [Ekran Görüntüleri](#-ekran-görüntüleri)
+3. [Teknoloji Yığını](#-teknoloji-yığını)
+4. [Sistem Mimarisi](#-sistem-mimarisi)
+5. [Nasıl Çalışır?](#-nasıl-çalışır)
+6. [Hızlı Başlangıç (Docker)](#-hızlı-başlangıç-docker-ile-kurulum)
+7. [Manuel Kurulum](#-manuel-kurulum-docker-olmadan)
+8. [Kullanım](#-kullanım)
+9. [API Referansı](#-api-referansı)
+10. [Sorun Giderme](#-sorun-giderme)
+11. [Klasör Yapısı](#-klasör-yapısı)
 
 ---
 
 ## 📖 Proje Tanımı
 
-**Sağlık YZ Etik Değerlendirme Platformu**, sağlık alanındaki yapay zekâ uygulamalarını çoklu düzenleyici ve etik çerçevelere karşı sistematik biçimde değerlendiren **kural tabanlı RAG-LLM** (Retrieval-Augmented Generation + Large Language Model) sistemidir.
+**EthicGuard**, sağlık alanındaki yapay zekâ uygulamalarını çoklu düzenleyici ve etik çerçevelere karşı sistematik biçimde değerlendiren **kural tabanlı RAG-LLM** (Retrieval-Augmented Generation + Large Language Model) platformudur.
 
 ### Değerlendirme Çerçeveleri
 
@@ -49,54 +74,87 @@ Her değerlendirme için:
 
 ---
 
+## 🖼 Ekran Görüntüleri
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/06-TeknikRapor/sekiller/02-evaluate.png" alt="Değerlendirme Formu" width="100%"/>
+      <br/>
+      <sub><b>Değerlendirme Formu</b> — Use case girişi ve LLM seçimi</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/06-TeknikRapor/sekiller/05-playground-result.png" alt="Değerlendirme Sonuçları" width="100%"/>
+      <br/>
+      <sub><b>Değerlendirme Sonuçları</b> — 5 boyutlu radar grafiği ve risk sınıfı</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/06-TeknikRapor/sekiller/04-rules.png" alt="Kural Motoru" width="100%"/>
+      <br/>
+      <sub><b>Kural Motoru</b> — 24 deklaratif etik & hukuki kural</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/06-TeknikRapor/sekiller/03-sources.png" alt="Bilgi Tabanı Kaynakları" width="100%"/>
+      <br/>
+      <sub><b>Bilgi Tabanı</b> — 8 küratörlü düzenleyici belge</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 🛠 Teknoloji Yığını
+
+| Katman | Araç / Kütüphane | Sürüm | Açıklama |
+|--------|-------------------|-------|----------|
+| **Frontend** | [Next.js](https://nextjs.org/) | 15 | React tabanlı, App Router |
+| **UI** | [shadcn/ui](https://ui.shadcn.com/) + [Tailwind CSS](https://tailwindcss.com/) | v4 | Bileşen kütüphanesi ve stil |
+| **Grafik** | [Recharts](https://recharts.org/) | latest | Radar / skor görselleştirme |
+| **Backend** | [FastAPI](https://fastapi.tiangolo.com/) | 0.115+ | Asenkron REST API |
+| **Dil** | [Python](https://www.python.org/) | 3.11+ | Backend çalışma zamanı |
+| **Vector DB** | [ChromaDB](https://www.trychroma.com/) | latest | Semantik arama ve depolama |
+| **Embedding** | [intfloat/multilingual-e5-base](https://huggingface.co/intfloat/multilingual-e5-base) | — | Çok dilli gömme modeli (~400 MB) |
+| **LLM (varsayılan)** | [Groq](https://groq.com/) · Llama 3.1 8B | — | Ücretsiz, düşük gecikmeli LLM API |
+| **LLM (alternatif)** | [Claude Sonnet](https://www.anthropic.com/) / [Ollama](https://ollama.com/) | — | Bulut veya yerel model seçeneği |
+| **Retrieval** | BM25 + Semantic + RRF | — | Hibrit arama füzyonu |
+| **Orkestrasyonu** | [Docker Compose](https://docs.docker.com/compose/) | — | Tek komutla çalıştırma |
+
+---
+
 ## 🏗 Sistem Mimarisi
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                           FRONTEND (Next.js 15)                          │
-│                     http://localhost:3000                                │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
-│  │  Anasayfa   │  │  /evaluate  │  │   /rules    │  │  /sources   │     │
-│  │  Playground │  │  Form+Sonuç │  │  24 Kural   │  │  8 Belge    │     │
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘     │
-└────────────────────────────────┬────────────────────────────────────────┘
-                                 │ REST API
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                           BACKEND (FastAPI)                              │
-│                     http://localhost:8000                                │
-│                                                                          │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                      RAG Pipeline                                 │   │
-│  │  ┌────────────┐   ┌────────────┐   ┌────────────┐                │   │
-│  │  │ 1. Query   │──▶│ 2. Hybrid  │──▶│ 3. Pre-LLM │                │   │
-│  │  │ Build      │   │ Retrieval  │   │ Rule Check │                │   │
-│  │  └────────────┘   └────────────┘   └────────────┘                │   │
-│  │        │                │                │                        │   │
-│  │        ▼                ▼                ▼                        │   │
-│  │  ┌────────────┐   ┌────────────┐   ┌────────────┐                │   │
-│  │  │ 4. LLM     │──▶│ 5. Post-   │──▶│ 6. Format  │                │   │
-│  │  │ Generation │   │ LLM Adjust │   │ Response   │                │   │
-│  │  └────────────┘   └────────────┘   └────────────┘                │   │
-│  └──────────────────────────────────────────────────────────────────┘   │
-│                                                                          │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
-│  │  ChromaDB   │  │ Rule Engine │  │  Retriever  │  │ LLM Provider│     │
-│  │  (Vectors)  │  │ (24 Rules)  │  │ (Hybrid)    │  │ Groq/Claude │     │
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘     │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+```mermaid
+flowchart TB
+    subgraph FE["🖥️  FRONTEND — Next.js 15 · localhost:3000"]
+        direction LR
+        P1[Anasayfa / Playground]
+        P2[/evaluate — Form ve Sonuç]
+        P3[/rules — 24 Kural]
+        P4[/sources — 8 Belge]
+    end
 
-### Ana Bileşenler
+    subgraph BE["⚙️  BACKEND — FastAPI · localhost:8000"]
+        direction TB
+        subgraph RAG["RAG Pipeline"]
+            R1[1. Query Build] --> R2[2. Hybrid Retrieval]
+            R2 --> R3[3. Pre-LLM Rule Check]
+            R3 --> R4[4. LLM Generation]
+            R4 --> R5[5. Post-LLM Adjust]
+            R5 --> R6[6. Format Response]
+        end
+        DB[(ChromaDB\nVectors)]
+        RE[Rule Engine\n24 Kural]
+        LLM[LLM Provider\nGroq / Claude / Ollama]
+        R2 <--> DB
+        R3 <--> RE
+        R4 <--> LLM
+    end
 
-| Bileşen | Teknoloji | Açıklama |
-|---------|-----------|----------|
-| **Frontend** | Next.js 15, React 19, Tailwind v4, shadcn/ui | Modern web arayüzü |
-| **Backend** | FastAPI, Python 3.11+ | REST API ve RAG pipeline |
-| **Vector DB** | ChromaDB | Semantik arama için embedding depolama |
-| **Embeddings** | intfloat/multilingual-e5-base | Çok dilli embedding modeli (~400 MB) |
-| **LLM** | Groq (Llama 3.1 8B) | Ücretsiz, hızlı LLM API |
-| **Retriever** | Semantic + BM25 + RRF | Hibrit arama (semantik + lexical) |
+    FE -->|REST API| BE
+    BE -->|JSON Response| FE
+```
 
 ---
 
@@ -128,20 +186,15 @@ Kurallar:
 
 ### 3. Hibrit Retrieval
 
-```
-Query: "Radyolojide YZ pnömoni tespiti MIMIC-CXR"
-                    │
-        ┌───────────┴───────────┐
-        ▼                       ▼
-   Semantic Search         BM25 Search
-   (Cosine Similarity)     (Keyword Match)
-        │                       │
-        └───────────┬───────────┘
-                    ▼
-            Reciprocal Rank Fusion (RRF)
-                    │
-                    ▼
-            Top-5 Chunks (fused scores)
+```mermaid
+flowchart TD
+    Q["🔍 Sorgu\nRadyolojide YZ pnömoni tespiti MIMIC-CXR"]
+    Q --> SS["Semantic Search\n(Cosine Similarity)"]
+    Q --> BS["BM25 Search\n(Keyword Match)"]
+    SS --> RRF["Reciprocal Rank Fusion (RRF)"]
+    BS --> RRF
+    RRF --> TOP["Top-5 Chunks\n(fused scores)"]
+    TOP --> LLM["LLM Değerlendirme"]
 ```
 
 ### 4. LLM Değerlendirme
@@ -492,11 +545,27 @@ ai-ethics-legal-rag/
 
 ### LLM Sağlayıcıları
 
-| Sağlayıcı | Model | Latency | Maliyet | Kullanım |
-|-----------|-------|---------|---------|----------|
-| **Groq** (varsayılan) | Llama 3.1 8B | ~2-5 sn | Ücretsiz | `LLM_PROVIDER=groq` |
-| **Claude** | Claude Sonnet | ~5-10 sn | Ücretli | `LLM_PROVIDER=claude` |
-| **Ollama** | Llama 3.2 3B | ~10-30 sn | Ücretsiz (yerel) | `LLM_PROVIDER=ollama` |
+| Sağlayıcı | Model | Gecikme | Maliyet | `.env` Ayarı |
+|-----------|-------|---------|---------|--------------|
+| **Groq** (varsayılan) | Llama 3.1 8B | ~2–5 sn | Ücretsiz | `LLM_PROVIDER=groq` |
+| **Claude** | Claude Sonnet | ~5–10 sn | Ücretli | `LLM_PROVIDER=claude` |
+| **Ollama** | Llama 3.2 3B | ~10–30 sn | Ücretsiz (yerel) | `LLM_PROVIDER=ollama` |
+
+### Kural Motoru Ablation Sonuçları
+
+Kural motoru etkin (ON) ve devre dışı (OFF) modda karşılaştırmalı sonuçlar:
+
+| Boyut | UC1 ON | UC1 OFF | UC2 ON | UC2 OFF | UC3 ON | UC3 OFF |
+|-------|--------|---------|--------|---------|--------|---------|
+| Adalet | 6.8 | 7.5 | 6.5 | 7.2 | 7.8 | 8.0 |
+| Şeffaflık | 7.5 | 7.7 | 6.5 | 7.0 | 8.0 | 8.0 |
+| Hesap Verebilirlik | 7.5 | 7.5 | 7.2 | 7.5 | 8.2 | 8.5 |
+| Mahremiyet | 7.8 | 8.0 | 7.0 | 7.4 | 8.5 | 8.5 |
+| İnsan Denetimi | 7.5 | 7.5 | 6.8 | 7.4 | 8.0 | 8.5 |
+| **Ortalama** | **7.4** | **7.6** | **6.8** | **7.3** | **8.1** | **8.3** |
+| **Δ (ON − OFF)** | **−0.2** | — | **−0.5** | — | **−0.2** | — |
+
+> Kural motoru, LLM'in gözden kaçırdığı gerçek uyumluluk boşluklarını (örn. MIMIC-CXR dataset bias) doğru biçimde skora yansıtır.
 
 ---
 
@@ -526,3 +595,9 @@ Bu proje **MIT Lisansı** altında lisanslanmıştır. Detaylar için [LICENSE](
 MIT License
 Copyright (c) 2025-2026 Elif Duymaz Yılmaz
 ```
+
+---
+
+<div align="center">
+<sub>EthicGuard · YZM 714 Final Projesi · İzmir Bakırçay Üniversitesi · 2025–2026</sub>
+</div>
